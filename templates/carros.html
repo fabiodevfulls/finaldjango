@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>Carros disponíveis para aluguel:</h1>
-<ul>
-    {% for carro in carros %}
-    <li>{{ carro.modelo }} - {{ carro.ano }}</li>
-    {% endfor %}
-</ul>
-{% endblock %}

@@ -1,0 +1,29 @@
+{
+	"folders": {},
+	"connections": {
+		"sqlite_jdbc-18851fe52f8-1da18e96c601df8a": {
+			"provider": "sqlite",
+			"driver": "sqlite_jdbc",
+			"name": "db.sqlite3",
+			"save-password": true,
+			"configuration": {
+				"database": "C:\\Users\\fabio\\projetofinal\\db.sqlite3",
+				"url": "jdbc:sqlite:C:\\Users\\fabio\\projetofinal\\db.sqlite3",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}

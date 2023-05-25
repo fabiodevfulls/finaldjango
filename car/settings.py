@@ -10,8 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path,os
+
+
+from django.contrib.messages import constants as messages
+from pathlib import Path
 from dotenv import load_dotenv
+import os
+
+
+
+
 
 load_dotenv()
 
@@ -40,8 +48,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'aluguel', 
-    'bootstrap5',
+    #'django.contrib.sites',
+    'apps.aluguel.apps.AluguelConfig', 
+    "apps.usuarios.apps.UsuariosConfig",
+    "storages",
+    #'allauth',
+    #'allauth.account',
+     #'allauth.socialaccount',
+  
+    
+    
 
 ]
 
@@ -62,12 +78,13 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
-        'OPTIONS': {
+        'OPTIONS': { 
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #"allauth.users.context_processors.allauth_settings",
             ],
         },
     },
@@ -79,12 +96,29 @@ WSGI_APPLICATION = 'car.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
+# Define o fuso horário do banco de dados como o fuso horário do Brasil
+
+
+...
+
+# Database
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'projetoFinal',
+        'USER': 'postgres',
+        'PASSWORD':'7485',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        
     }
 }
+
+...
 
 
 # Password validation
@@ -106,10 +140,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
@@ -119,13 +155,71 @@ USE_I18N = True
 USE_TZ = True
 
 
+# ...
+
+AWS_ACCESS_KEY_ID = 'AKIAQ7MD76FMCVMFXR64'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'fotografiasaluraspace'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400'
+}
+AWS_LOCATION = 'static'
+AWS_QUERYSTRING_AUTH = False
+AWS_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+}
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'car/static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+# ...
+
+
+
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.SUCCESS: 'success',
+}
+    
+
+#ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+#ACCOUNT_EMAIL_REQUIRED = True
+
+
+#SITE_ID = 1
+
+
+#AUTHENTICATION_BACKENDS = [
+    # Necessário para autenticação por nome de usuário no Django admin
+    #'django.contrib.auth.backends.ModelBackend',
+    # Backend específico do allauth para autenticação por e-mail
+    #'allauth.account.auth_backends.AuthenticationBackend',
+#]
+
+
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
+#LOGIN_REDIRECT_URL = "users:redirect"
+# https://docs.djangoproject.com/en/dev/ref/settings/#login-url
+#LOGIN_URL = "account_login"
