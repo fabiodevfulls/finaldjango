@@ -1,0 +1,37 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Aluguéis</title>
+</head>
+<body>
+    <h1>Lista de Aluguéis</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Data de Aluguel</th>
+                <th>Data de Devolução</th>
+                <th>Valor</th>
+                <th>Devolvido</th>
+                <th>Carro</th>
+                <th>Usuário</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aluguel in alugueis %}
+            <tr>
+                <td>{{ aluguel.codigo }}</td>
+                <td>{{ aluguel.data_aluguel }}</td>
+                <td>{{ aluguel.data_devolucao }}</td>
+                <td>{{ aluguel.valor }}</td>
+                <td>{{ aluguel.devolucao }}</td>
+                <td>{{ aluguel.carro.modelo }}</td>
+                <td>{{ aluguel.usuario.nome }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

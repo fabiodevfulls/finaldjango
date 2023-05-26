@@ -1,5 +1,9 @@
 
 
+from .models import Aluguel, Carro
+from .forms import AluguelForm
+from .models import Aluguel
+from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -74,51 +78,29 @@ def deletar_carro(request,foto_id):
     messages.success(request, 'carro excluída com sucesso.')
     return redirect('index')
     
-def filtro(request, categoria):
+def filtro(request):
     carros = Carro.objects.order_by("fabricante").filter(publicada=True)
     return render(request, 'index.html', {"cards": carros})
 
 
+def realizar_aluguel(request, carro_pk):
+    carro = Carro.objects.get(pk=carro_pk)
 
-def realizar_aluguel(request):
-    if not request.user.is_authenticated:
-        messages.error(request, 'usuario não logado')
-        return redirect('login')
-    if request.method == "POST":
+    if request.method == 'POST':
         form = AluguelForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/')
+            aluguel = form.save(commit=False)
+            aluguel.carro = carro
+            aluguel.usuario = request.user
+            aluguel.save()
+            return redirect('detalhar_aluguel', aluguel.pk)
     else:
         form = AluguelForm()
 
-    return render(request, "aluguel/aluguel.html", {'form': form})
+    return render(request, 'realizar_aluguel.html', {'form': form, 'carro': carro})
 
 
+def detalhar_aluguel(request, pk):
+    aluguel = get_object_or_404(Aluguel, pk=pk)
+    return render(request, 'detalhar_aluguel.html', {'aluguel': aluguel})
 
-def realizar_aluguel_carro(request, carro_pk):
-    if not request.user.is_authenticated:
-        messages.error(request, 'usuario não logado')
-        return redirect('login')
-    carro = Carro.objects.get(pk=carro_pk)
-    aluguel = Aluguel(carro=carro)
-
-    form = AluguelForm(instance=aluguel)
-
-    if request.method == "POST":
-        form = AluguelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    else:
-        form = AluguelForm(instance=aluguel)
-
-    return render(request, "aluguel/aluguel.html", {'form': form, 'carro': carro})
-
-
-
-
-def lista_aluguel(request):
-    alugueis = Aluguel.objects.all()
-    form = AluguelForm()
-    return render(request, 'aluguel/lista_aluguel.html', {'alugueis': alugueis, 'form': form})
