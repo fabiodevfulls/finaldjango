@@ -1,37 +1,31 @@
 {% extends 'shared/base.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Aluguéis</title>
-</head>
-<body>
-    <h1>Lista de Aluguéis</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Data de Aluguel</th>
-                <th>Data de Devolução</th>
-                <th>Valor</th>
-                <th>Devolvido</th>
-                <th>Carro</th>
-                <th>Usuário</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for aluguel in alugueis %}
-            <tr>
-                <td>{{ aluguel.codigo }}</td>
-                <td>{{ aluguel.data_aluguel }}</td>
-                <td>{{ aluguel.data_devolucao }}</td>
-                <td>{{ aluguel.valor }}</td>
-                <td>{{ aluguel.devolucao }}</td>
-                <td>{{ aluguel.carro.modelo }}</td>
-                <td>{{ aluguel.usuario.nome }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+
+{% block content %}
+    <section class="conteudo">
+        
+        <section class="imagem">
+            <div class="imagem__conteudo">
+                {% if aluguel.carro.foto %}
+                    <img class="imagem__imagem" src="{{ aluguel.carro.foto.url }}">
+                {% else %}
+                    <img class="imagem__imagem" src="{% static 'assets/sem-imagem.png' %}">
+                {% endif %}
+                <div class="imagem__info">
+                    <div class="imagem__texto">
+                        <p class="imagem__titulo">Detalhes do Aluguel</p>
+                        <p class="imagem__texto">Código: {{ aluguel.codigo }}</p>
+                        <p class="imagem__texto">Data de Aluguel: {{ aluguel.data_aluguel }}</p>
+                        <p class="imagem__texto">Data de Devolução: {{ aluguel.data_devolucao }}</p>
+                        <p class="imagem__texto">Valor: {{ aluguel.valor }}</p>
+                        <p class="imagem__texto">Devolvido: {{ aluguel.devolucao }}</p>
+                        <p class="imagem__texto">Carro: {{ aluguel.carro.modelo }}</p>
+                        <p class="imagem__texto">Usuário: {{ aluguel.usuario.username }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div> <!-- Adicione esta linha -->
+    </section>
+{% endblock %}

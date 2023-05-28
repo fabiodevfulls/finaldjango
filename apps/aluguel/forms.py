@@ -1,5 +1,8 @@
+from .models import Aluguel
 from django import forms
 from apps.aluguel.models import Carro,Aluguel
+
+
 
 
 class CarroForms(forms.ModelForm):
@@ -31,8 +34,26 @@ class CarroForms(forms.ModelForm):
         }
 
 
-class AluguelForm(forms.ModelForm):
+class AluguelForms(forms.ModelForm):
     class Meta:
         model = Aluguel
-        fields = '__all__'
+        exclude = ['devolucao']
+        labels = {
+            'codigo': 'Código',
+            'data_aluguel': 'Data de aluguel',
+            'data_devolucao': 'Data de devolução',
+            'valor': 'Valor',
+            'devolucao': 'Devolvido',
+            'carro': 'Carro',
+            'usuario': 'Cliente',
+        }
+        widgets = {
+            'codigo': forms.TextInput(attrs={'class': 'form-control'}),
+            'data_aluguel': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'data_devolucao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'valor': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number'}),
+            'carro': forms.Select(attrs={'class': 'form-control'}),
+            'usuario': forms.Select(attrs={'class': 'form-control'}),
+        }
+
         

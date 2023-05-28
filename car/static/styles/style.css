@@ -536,3 +536,10 @@ table {
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
 }
+
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}

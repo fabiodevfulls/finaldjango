@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import RegexValidator
 
 
 class loginForms(forms.Form):
@@ -46,6 +47,26 @@ class cadastroForms(forms.Form):
             attrs={
                 'class': 'form-control',
                 'placeholder': 'Ex.: joaosilva@xpto.com',
+            }
+        )
+    )
+    cpf = forms.CharField(
+        label='CPF',
+        validators=[
+            RegexValidator(
+                regex=r'^\d{3}\.\d{3}\.\d{3}-\d{2}$',
+                message='CPF inválido. Formato esperado: XXX.XXX.XXX-XX',
+                code='invalid_cpf'
+            )
+        ]
+    )
+    data_nascimento = forms.DateField(
+        label='Data de Nascimento',
+        required=True,
+        widget=forms.DateInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Ex.: 00/00/0000',
             }
         )
     )

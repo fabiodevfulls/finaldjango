@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'apps.aluguel.apps.AluguelConfig', 
     "apps.usuarios.apps.UsuariosConfig",
     "storages",
+    'bootstrap_datepicker_plus',
+    #'tempus_dominus',
     #'allauth',
     #'allauth.account',
      #'allauth.socialaccount',
@@ -200,6 +202,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.INFO: 'info',
 }
     
 
