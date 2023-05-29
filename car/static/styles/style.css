@@ -543,3 +543,8 @@ table {
     display: table;
     clear: both;
 }
+
+.cpf-field {
+    width: 200px;
+    /* Ajuste o tamanho conforme necessário */
+}

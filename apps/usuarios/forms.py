@@ -20,7 +20,7 @@ class loginForms(forms.Form):
         max_length=70,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'form-control', 'type': 'password',
                 'placeholder': 'Digite a sua senha',
             }
         ),
@@ -39,19 +39,17 @@ class cadastroForms(forms.Form):
             }
         )
     )
-    email = forms.EmailField(
-        label='Email',
-        required=True,
-        max_length=100,
-        widget=forms.EmailInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Ex.: joaosilva@xpto.com',
-            }
-        )
-    )
+    
     cpf = forms.CharField(
         label='CPF',
+        required=True,
+        max_length=14,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control cpf-field',
+                'placeholder': 'Ex.: 123.456.789-00',
+            }
+        ),
         validators=[
             RegexValidator(
                 regex=r'^\d{3}\.\d{3}\.\d{3}-\d{2}$',
@@ -60,12 +58,25 @@ class cadastroForms(forms.Form):
             )
         ]
     )
+    email = forms.EmailField(
+        label='Email',
+        required=True,
+        max_length=100,
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Ex.: joaosilva@xpto.com',
+                'type': 'email',
+            }
+        )
+    )
+
     data_nascimento = forms.DateField(
         label='Data de Nascimento',
         required=True,
         widget=forms.DateInput(
             attrs={
-                'class': 'form-control',
+                'class': 'form-control', 'type': 'date',
                 'placeholder': 'Ex.: 00/00/0000',
             }
         )
@@ -76,7 +87,7 @@ class cadastroForms(forms.Form):
         max_length=70,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'form-control', 'type': 'password',
                 'placeholder': 'Digite a sua senha',
             }
         ),
@@ -87,7 +98,7 @@ class cadastroForms(forms.Form):
         max_length=70,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'form-control', 'type': 'password',
                 'placeholder': 'Digite a sua senha novamente',
             }
         ),
