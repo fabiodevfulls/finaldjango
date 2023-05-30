@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     "apps.usuarios.apps.UsuariosConfig",
     "storages",
     'bootstrap_datepicker_plus',
+    'rest_framework',
+    'rest_framework.authtoken',
+    
     #'tempus_dominus',
     #'allauth',
     #'allauth.account',
@@ -205,9 +208,22 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.INFO: 'info',
 }
-    
+ 
 
-#ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 5,
+}
+
+# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 #ACCOUNT_EMAIL_REQUIRED = True
 
 

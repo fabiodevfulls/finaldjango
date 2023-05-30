@@ -1,9 +1,13 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Carro, Aluguel
 from .forms import AluguelForms, CarroForms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import viewsets
+from .serializers import CarroSerializer, AluguelSerializer
 
 
 def lista_carros(request):
@@ -25,7 +29,6 @@ def detalhar_carro(request, carro_pk):
     return render(request, 'carros/detalhar_carro.html', {"carro": carro})
 
 
-
 @login_required
 def cadastro_carro(request):
     form = CarroForms()
@@ -34,7 +37,7 @@ def cadastro_carro(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'O novo carro foi cadastrado.')
-            return redirect('index')
+            return redirect(reverse_lazy('index'))
     return render(request, "cadastro_carro.html", {'form': form})
 
 
@@ -60,7 +63,7 @@ def editar_carro(request, carro_pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Carro alterado com sucesso.')
-            return redirect('detalhar_carro', carro_pk=carro_pk)
+            return redirect(reverse_lazy('detalhar_carro', kwargs={'carro_pk': carro_pk}))
     else:
         form = CarroForms(instance=carro)
 
@@ -68,13 +71,13 @@ def editar_carro(request, carro_pk):
     return render(request, 'editar_carro.html', context)
 
 
-
 @login_required
 def deletar_carro(request, carro_pk):
     carro = get_object_or_404(Carro, id=carro_pk)
     carro.delete()
     messages.success(request, 'Carro excluído com sucesso.')
-    return redirect('index')
+    return redirect(reverse_lazy('index'))
+
 
 def filtro(request, categoria):
     carros = Carro.objects.order_by("fabricante").filter(
@@ -91,10 +94,10 @@ def realizar_aluguel(request, carro_pk):
             aluguel = form.save(commit=False)
             aluguel.carro = carro
             # Defina o valor do campo "devolucao"
-            
+
             aluguel.save()
             messages.success(request, 'Aluguel realizado com sucesso')
-            return redirect('detalhar_aluguel', pk=aluguel.pk)
+            return redirect(reverse_lazy('detalhar_aluguel', kwargs={'pk': aluguel.pk}))
     else:
         form = AluguelForms(initial={'carro': carro})
 
@@ -102,7 +105,11 @@ def realizar_aluguel(request, carro_pk):
     return render(request, 'aluguel/realizar_aluguel.html', context)
 
 
-
 def detalhar_aluguel(request, pk):
     aluguel = get_object_or_404(Aluguel, pk=pk)
     return render(request, 'aluguel/detalhar_aluguel.html', {'aluguel': aluguel})
+
+
+class CarroSerializer(viewsets.ModelViewSet):
+    queryset = Carro.objects.all()
+    serializer_class = CarroSerializer
